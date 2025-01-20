@@ -5,6 +5,7 @@ const htmlContext = document.querySelector("html");
 const shortRestButton = document.querySelector(".app__card-button--curto");
 const longRestButton = document.querySelector(".app__card-button--longo");
 const focusButton = document.querySelector(".app__card-button--foco");
+const toggleButtonListAll = document.querySelectorAll(".app__card-button");
 
 // select
 const timerContainer = document.querySelector(".app__card-timer");
@@ -41,6 +42,9 @@ const toggleImage = (context) => {
 // toggle context
 const toggleContext = (context, event) => {
   event.preventDefault();
+  toggleButtonListAll.forEach((button) => {
+    button.classList.remove("active");
+  });
 
   htmlContext.setAttribute("data-contexto", context);
   toggleImage(context);
@@ -57,14 +61,17 @@ startButton.addEventListener("click", () => {
 shortRestButton.addEventListener("click", (event) => {
   const timeValue = 300;
   toggleContext("descanso-curto", event);
+  shortRestButton.classList.add("active");
 });
 
 longRestButton.addEventListener("click", (event) => {
   const timeValue = 900;
   toggleContext("descanso-longo", event);
+  longRestButton.classList.add("active");
 });
 
 focusButton.addEventListener("click", (event) => {
   const timeValue = 1500;
   toggleContext("foco", event);
+  focusButton.classList.add("active");
 });
