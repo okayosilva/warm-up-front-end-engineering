@@ -57,6 +57,7 @@ const toggleContext = (context, event) => {
 // event listeners
 
 isActiveAudio.addEventListener("change", () => {
+  audio.loop = true;
   if (audio.paused) {
     audio.currentTime = 0;
     audio.play();
