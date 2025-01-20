@@ -9,23 +9,42 @@ const focusButton = document.querySelector(".app__card-button--foco");
 // select
 const timerContainer = document.querySelector(".app__card-timer");
 const imageSwitch = document.querySelector(".app__image");
+
 const titleSwitch = document.querySelector(".app__title");
 const titleStrongSwitch = document.querySelector(".app__title-strong");
+
 const startButton = document.querySelector("#start-pause");
+
+const phrases = {
+  "descanso-curto": {
+    title:
+      "Que tal dar uma respirada? <br> <strong class='app__title-strong'>Faça uma pausa curta!</strong>",
+  },
+  "descanso-longo": {
+    title:
+      "Hora de voltar à superfície. <br> <strong class='app__title-strong'>Faça uma pausa longa.</strong>",
+  },
+  foco: {
+    title:
+      "Otimize sua produtividade, <br> <strong class='app__title-strong'>mergulhe no que importa.</strong>",
+  },
+};
+
+const toggleTitle = (context) => {
+  titleSwitch.innerHTML = phrases[context].title;
+};
+
+const toggleImage = (context) => {
+  imageSwitch.setAttribute("src", `./imagens/${context}.png`);
+};
 
 // toggle context
 const toggleContext = (context, event) => {
   event.preventDefault();
-  // htmlContext.dataset.contexto = context;
-  htmlContext.setAttribute("data-contexto", context);
-};
 
-const toggleButton = (button) => {
-  if (button.classList.contains("active")) {
-    button.classList.remove("active");
-  } else {
-    button.classList.add("active");
-  }
+  htmlContext.setAttribute("data-contexto", context);
+  toggleImage(context);
+  toggleTitle(context);
 };
 
 // event listeners
