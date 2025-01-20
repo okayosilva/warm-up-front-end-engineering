@@ -1,16 +1,26 @@
+// html
+const htmlContext = document.querySelector("html");
+
+// context buttons
 const shortRestButton = document.querySelector(".app__card-button--curto");
 const longRestButton = document.querySelector(".app__card-button--longo");
 const focusButton = document.querySelector(".app__card-button--foco");
 
-const htmlContext = document.querySelector("html");
+// select
+const timerContainer = document.querySelector(".app__card-timer");
+const imageSwitch = document.querySelector(".app__image");
+const titleSwitch = document.querySelector(".app__title");
+const titleStrongSwitch = document.querySelector(".app__title-strong");
+const startButton = document.querySelector("#start-pause");
 
-const toggleContext = (context) => {
+// toggle context
+const toggleContext = (context, event) => {
+  event.preventDefault();
   // htmlContext.dataset.contexto = context;
   htmlContext.setAttribute("data-contexto", context);
 };
 
 const toggleButton = (button) => {
-  console.log(button);
   if (button.classList.contains("active")) {
     button.classList.remove("active");
   } else {
@@ -18,17 +28,24 @@ const toggleButton = (button) => {
   }
 };
 
-shortRestButton.addEventListener("click", () => {
-  toggleContext("descanso-curto");
+// event listeners
 
+startButton.addEventListener("click", () => {
+  console.log("start");
 });
 
-longRestButton.addEventListener("click", () => {
-  toggleContext("descanso-longo");
-
+// context buttons
+shortRestButton.addEventListener("click", (event) => {
+  const timeValue = 300;
+  toggleContext("descanso-curto", event);
 });
 
-focusButton.addEventListener("click", () => {
-  toggleContext("foco");
+longRestButton.addEventListener("click", (event) => {
+  const timeValue = 900;
+  toggleContext("descanso-longo", event);
+});
 
+focusButton.addEventListener("click", (event) => {
+  const timeValue = 1500;
+  toggleContext("foco", event);
 });
