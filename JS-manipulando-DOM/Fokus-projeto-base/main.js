@@ -16,6 +16,9 @@ const titleStrongSwitch = document.querySelector(".app__title-strong");
 
 const startButton = document.querySelector("#start-pause");
 
+const isActiveAudio = document.querySelector("#alternar-musica");
+const audio = new Audio("./sons/luna-rise-part-one.mp3");
+
 const phrases = {
   "descanso-curto": {
     title:
@@ -52,6 +55,16 @@ const toggleContext = (context, event) => {
 };
 
 // event listeners
+
+isActiveAudio.addEventListener("change", () => {
+  if (audio.paused) {
+    audio.currentTime = 0;
+    audio.play();
+  } else {
+    audio.pause();
+    audio.currentTime = 0;
+  }
+});
 
 startButton.addEventListener("click", () => {
   console.log("start");
