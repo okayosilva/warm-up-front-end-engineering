@@ -14,6 +14,8 @@ const imageSwitch = document.querySelector(".app__image");
 const titleSwitch = document.querySelector(".app__title");
 const titleStrongSwitch = document.querySelector(".app__title-strong");
 
+const titleElement = document.querySelector("title");
+
 const startButton = document.querySelector("#start-pause");
 const titleButtonTimer =
   document.querySelector("#start-pause").lastElementChild;
@@ -93,6 +95,7 @@ const showTimer = () => {
   });
 
   timerCountDownContainer.textContent = timeFormatted;
+  titleElement.textContent = `Fokus - ${timeFormatted}`;
 };
 
 const initTimer = () => {
