@@ -17,6 +17,8 @@ const titleStrongSwitch = document.querySelector(".app__title-strong");
 const startButton = document.querySelector("#start-pause");
 const titleButtonTimer =
   document.querySelector("#start-pause").lastElementChild;
+const imageButtonTimer =
+  document.querySelector("#start-pause").firstElementChild;
 
 const isActiveAudio = document.querySelector("#alternar-musica");
 const audio = new Audio("./sons/luna-rise-part-one.mp3");
@@ -24,8 +26,9 @@ const playAudio = new Audio("./sons/play.wav");
 const pauseAudio = new Audio("./sons/pause.mp3");
 const alertAudio = new Audio("./sons/beep.mp3");
 
-let timeInSeconds = 15;
+let timeInSeconds = 1500;
 let timerInterval;
+timerCountDownContainer.innerHTML = `00:00`;
 
 const phrases = {
   "descanso-curto": {
@@ -53,6 +56,7 @@ const toggleImage = (context) => {
 // toggle context
 const toggleContext = (context, event) => {
   event.preventDefault();
+  showTimer();
   toggleButtonListAll.forEach((button) => {
     button.classList.remove("active");
   });
@@ -64,26 +68,39 @@ const toggleContext = (context, event) => {
 
 const timerCountDown = () => {
   if (timeInSeconds <= 0) {
-    titleButtonTimer.innerHTML = `Começar`;
     alertAudio.volume = 0.2;
     alertAudio.play();
 
-    timerCountDownContainer.innerHTML = `00:00`;
-    alert("Tempo esgotado");
+    imageButtonTimer.setAttribute("src", "./imagens/play_arrow.png");
+    titleButtonTimer.textContent = `Começar`;
+
     clearIntervalTimer();
+    alert("Tempo esgotado");
     return;
   }
 
-  timerCountDownContainer.innerHTML = `${timeInSeconds}`;
-
-  titleButtonTimer.innerHTML = `Pausar`;
+  showTimer();
+  imageButtonTimer.setAttribute("src", "./imagens/pause.png");
+  titleButtonTimer.textContent = `Pausar`;
   timeInSeconds--;
+};
+
+const showTimer = () => {
+  const time = new Date(timeInSeconds * 1000);
+  const timeFormatted = time.toLocaleTimeString("pt-BR", {
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
+  timerCountDownContainer.textContent = timeFormatted;
 };
 
 const initTimer = () => {
   if (timerInterval) {
     pauseAudio.volume = 0.2;
     pauseAudio.play();
+    imageButtonTimer.setAttribute("src", "./imagens/play_arrow.png");
+    titleButtonTimer.textContent = `Começar`;
     clearIntervalTimer();
     return;
   }
@@ -113,21 +130,23 @@ isActiveAudio.addEventListener("change", () => {
 
 // context buttons
 shortRestButton.addEventListener("click", (event) => {
-  const timeValue = 300;
+  timeInSeconds = 300;
   toggleContext("descanso-curto", event);
   shortRestButton.classList.add("active");
 });
 
 longRestButton.addEventListener("click", (event) => {
-  const timeValue = 900;
+  timeInSeconds = 900;
   toggleContext("descanso-longo", event);
   longRestButton.classList.add("active");
 });
 
 focusButton.addEventListener("click", (event) => {
-  const timeValue = 1500;
+  timeInSeconds = 1500;
   toggleContext("foco", event);
   focusButton.classList.add("active");
 });
 
 startButton.addEventListener("click", () => initTimer());
+
+showTimer();
