@@ -8,16 +8,24 @@ const focusButton = document.querySelector(".app__card-button--foco");
 const toggleButtonListAll = document.querySelectorAll(".app__card-button");
 
 // select
-const timerContainer = document.querySelector(".app__card-timer");
+const timerCountDownContainer = document.querySelector(".app__card-timer");
 const imageSwitch = document.querySelector(".app__image");
 
 const titleSwitch = document.querySelector(".app__title");
 const titleStrongSwitch = document.querySelector(".app__title-strong");
 
 const startButton = document.querySelector("#start-pause");
+const titleButtonTimer =
+  document.querySelector("#start-pause").lastElementChild;
 
 const isActiveAudio = document.querySelector("#alternar-musica");
 const audio = new Audio("./sons/luna-rise-part-one.mp3");
+const playAudio = new Audio("./sons/play.wav");
+const pauseAudio = new Audio("./sons/pause.mp3");
+const alertAudio = new Audio("./sons/beep.mp3");
+
+let timeInSeconds = 15;
+let timerInterval;
 
 const phrases = {
   "descanso-curto": {
@@ -54,6 +62,42 @@ const toggleContext = (context, event) => {
   toggleTitle(context);
 };
 
+const timerCountDown = () => {
+  if (timeInSeconds <= 0) {
+    titleButtonTimer.innerHTML = `Começar`;
+    alertAudio.volume = 0.2;
+    alertAudio.play();
+
+    timerCountDownContainer.innerHTML = `00:00`;
+    alert("Tempo esgotado");
+    clearIntervalTimer();
+    return;
+  }
+
+  timerCountDownContainer.innerHTML = `${timeInSeconds}`;
+
+  titleButtonTimer.innerHTML = `Pausar`;
+  timeInSeconds--;
+};
+
+const initTimer = () => {
+  if (timerInterval) {
+    pauseAudio.volume = 0.2;
+    pauseAudio.play();
+    clearIntervalTimer();
+    return;
+  }
+
+  playAudio.volume = 0.2;
+  playAudio.play();
+  timerInterval = setInterval(timerCountDown, 1000);
+};
+
+const clearIntervalTimer = () => {
+  clearInterval(timerInterval);
+  timerInterval = null;
+};
+
 // event listeners
 
 isActiveAudio.addEventListener("change", () => {
@@ -65,10 +109,6 @@ isActiveAudio.addEventListener("change", () => {
     audio.pause();
     audio.currentTime = 0;
   }
-});
-
-startButton.addEventListener("click", () => {
-  console.log("start");
 });
 
 // context buttons
@@ -89,3 +129,5 @@ focusButton.addEventListener("click", (event) => {
   toggleContext("foco", event);
   focusButton.classList.add("active");
 });
+
+startButton.addEventListener("click", () => initTimer());
